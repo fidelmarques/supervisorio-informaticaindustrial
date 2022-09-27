@@ -1,0 +1,467 @@
+#:kivy 1.11.1
+
+<ModbusPopup>:
+    title: "Configurações MODBUS"
+    size_hint_y: None
+    size_hint_x: 0.4
+    height: 250
+    BoxLayout:
+        id: layout_mb
+        orientation:'vertical'
+        GridLayout:
+            cols: 2
+            rows: 2
+            Label:
+                text:'IP'
+                font_size: 14
+            TextInput:
+                id: txt_ip
+                text:'127.0.0.1'
+                font_size: 14
+                halign: 'center'
+                valign: 'middle'
+            Label:
+                text:'Porta'
+                font_size: 14
+            TextInput:
+                id: txt_port
+                text:'502'
+                font_size: 14
+                halign: 'center'
+                valign: 'middle'
+        BoxLayout:
+            orientation: 'horizontal'
+            Button:
+                text:'Conectar'
+                size_hint_y: None
+                height: 40
+                on_release: 
+                    root.clearInfo()
+                    app.root.startDataRead(txt_ip.text,int(txt_port.text))
+            Button:
+                text:'Fechar'
+                size_hint_y: None
+                height: 40
+                on_release:
+                    root.dismiss()
+                    root.clearInfo()
+
+<ScanPopup>:
+    title: "Configuração Scan Time"
+    size_hint_y: None
+    size_hint_x: 0.5
+    height: 150
+    BoxLayout:
+        id: layout_st
+        orientation:'vertical'
+        GridLayout:
+            cols: 2
+            rows: 1
+            Label:
+                text:'Scan Time [ms]'
+                font_size: 14
+            TextInput:
+                id: txt_st
+                font_size: 14
+                halign: 'center'
+                valign: 'middle'
+        BoxLayout:
+            orientation: 'horizontal'
+            Button:
+                text:'Definir'
+                size_hint_y: None
+                height: 40
+                on_release: 
+                    app.root._scan_time = int(txt_st.text)
+            Button:
+                text:'Fechar'
+                size_hint_y: None
+                height: 40
+                on_release:
+                    root.dismiss()
+
+<MotorPopup>:
+    title: "Configurações do Motor"
+    size_hint_y: None
+    size_hint_x: 0.5
+    height: 200
+    id: layout_motor
+    BoxLayout:
+        orientation: 'vertical'
+        GridLayout:
+            cols: 2
+            rows: 1
+            Label:
+                text:'Frequência do Motor [Hz]'
+                font_size:14
+            TextInput:
+                id: txt_freq
+                font_size: 14
+                halign:'center'
+                valign:'middle'
+        GridLayout:
+            cols:1
+            rows:1
+            Button:
+                text: 'Definir'
+                on_release:
+                    app.root._freqmot = int(txt_freq.text)
+                    app.root.defFreq()
+        GridLayout:
+            cols:2
+            rows:1   
+            Button:
+                text: 'Ligar'
+                on_release:
+                    app.root.ligMotor()
+            Button:
+                text:'Desligar'
+                on_release:
+                    app.root.desMotor()
+        Button:
+            text:'Fechar'
+            on_release:
+                root.dismiss()
+
+
+<SolenoidesPopup>:
+    title: "Controle Solenoides"
+    size_hint_y: None
+    size_hint_x: 0.5
+    height: 150
+    id: layout_solenoides
+    BoxLayout:
+        orientation: 'horizontal'
+        GridLayout:
+            cols:3
+            rows:2
+            Button:
+                text:'Ligar 1'
+                on_release:
+                    app.root.ligSol1()
+            Button:
+                text:'Ligar 2'
+                on_release:
+                    app.root.ligSol2()
+            Button:
+                text:'Ligar 3'
+                on_release:
+                    app.root.ligSol3()
+            Button:
+                text:'Desligar 1'
+                on_release:
+                    app.root.desSol1()
+            Button:
+                text:'Desligar 2'
+                on_release:
+                    app.root.desSol2()
+            Button:
+                text:'Desligar 3'
+                on_release:
+                    app.root.desSol3()
+        Button:
+            text: 'Fechar'
+            size_hint_x: 0.4
+            on_release:
+                root.dismiss()
+
+<ControlePopup>:
+    title: "Configurações de Controle Automático"
+    size_hint_y: None
+    size_hint_x: 0.4
+    height: 250
+    BoxLayout:
+        id: layout_controle
+        orientation:'vertical'
+        GridLayout:
+            cols: 2
+            rows: 2
+            Label:
+                text:'Set Point'
+                font_size: 14
+            TextInput:
+                id: txt_sp
+                font_size: 14
+                halign: 'center'
+                valign: 'middle'
+            Label:
+                text:'Banda'
+                font_size: 14
+            TextInput:
+                id: txt_banda
+                font_size: 14
+                halign: 'center'
+                valign: 'middle'
+        Button:
+            text:'Definir'
+            size_hint_y: None
+            height: 40
+            on_release:
+                app.root._sp = int(txt_sp.text)
+                app.root._banda = int(txt_banda.text)
+        BoxLayout:
+            orientation: 'horizontal'
+            GridLayout:
+                cols: 2
+                rows: 1
+                Button:
+                    text: 'Ligar Controle'
+                    size_hint_y: None
+                    height: 40
+                    on_release:
+                        app.root._controle = True
+                        app.root.controleHisterese()
+                Button:
+                    text: 'Desligar Controle'
+                    size_hint_y: None
+                    height: 40
+                    on_release:
+                        app.root._controle = False
+        Button:
+            text:'Fechar'
+            size_hint_y: None
+            height: 40
+            on_release:
+                root.dismiss()
+
+<GraficosPopup>:
+    title:"Gráficos do Sistema"
+    size_hint_y:None
+    size_hint_x: 0.5
+    height: 150
+    BoxLayout:
+        orientation:'vertical'
+        GridLayout:
+            cols:2
+            rows:1
+            Button:
+                text: 'Vazão na Tubulação'
+                on_release:
+                    app.root._vazaoGraph.open()
+            Button:
+                text: 'Nível no Reservatório'
+                on_release:
+                    app.root._nivelGraph.open()
+        Button:
+            text:'Fechar'
+            on_release:
+                root.dismiss()
+
+<NivelPopup>:
+    title: 'Gráfico de Nível do Tanque'
+    BoxLayout:
+        orientation: 'vertical'
+        TimeSeriesGraph:
+            id: nivel_graph
+            xlabel: 'Horário'
+            ylabel: 'Volume [L]'
+            background_color: 0.5,0.5,0.5,0.5
+            x_ticks_minor: 1
+            x_ticks_major: 5
+            y_ticks_major: 100
+            x_grid_label: True
+            y_grid_label: True
+            padding: 5
+            x_grid: True
+            y_grid: True
+            xmin: 0
+            ymin: 0
+            ymax: 1000
+        BoxLayout:
+            orientation:'horizontal'
+            size_hint: (1,0.05)
+            BoxLayout:
+                orientation:'horizontal'
+                size_hint:(0.5,1)
+                Label:
+                    text:'Número de Pontos do Gráfico'
+                    size_hint: (0.3,1)
+                LabeledCheckBoxNivelGraph:
+                    id: mp20
+                    on_kv_post:
+                        self.ids.label.text ='20'
+                        self.ids.checkbox.group = 'cb1_group'
+                        self.ids.checkbox.active = True
+                LabeledCheckBoxNivelGraph:
+                    id: mp50
+                    on_kv_post:
+                        self.ids.label.text = '50'
+                        self.ids.checkbox.group = 'cb1_group'
+                LabeledCheckBoxNivelGraph:
+                    id: mp100
+                    on_kv_post:
+                        self.ids.label.text = '100'
+                        self.ids.checkbox.group = 'cb1_group'
+            Button:
+                text:"Fechar"
+                size_hint:(0.2,1)
+                on_release:
+                    root.dismiss()
+
+<LabeledCheckBoxNivelGraph>:
+    orientation: 'horizontal'
+    size_hint: (0.1,1)
+    CheckBox:
+        id: checkbox
+        on_active: app.root._nivelGraph.ids.nivel_graph.setMaxPoints(int(label.text),0) if app.root is not None else None
+    Label:
+        id: label
+
+
+<VazaoPopup>:
+    title: 'Gráfico da Vazão nas Tubulações'
+    BoxLayout:
+        orientation: 'vertical'
+        TimeSeriesGraph:
+            id: vazao_graph
+            xlabel: 'Horário'
+            ylabel: 'Vazão [L/s]'
+            background_color: 0.5,0.5,0.5,0.5
+            x_ticks_minor: 1
+            x_ticks_major: 5
+            y_ticks_major: 100
+            x_grid_label: True
+            y_grid_label: True
+            padding: 5
+            x_grid: True
+            y_grid: True
+            xmin: 0
+            ymin: 0
+            ymax: 100
+        BoxLayout:
+            orientation:'horizontal'
+            size_hint: (1,0.05)
+            BoxLayout:
+                orientation:'horizontal'
+                size_hint:(0.5,1)
+                Label:
+                    text:'Número de Pontos do Gráfico'
+                    size_hint: (0.3,1)
+                LabeledCheckBoxVazaoGraph:
+                    id: mp20
+                    on_kv_post:
+                        self.ids.label.text ='20'
+                        self.ids.checkbox.group = 'cb_group'
+                        self.ids.checkbox.active = True
+                LabeledCheckBoxVazaoGraph:
+                    id: mp50
+                    on_kv_post:
+                        self.ids.label.text = '50'
+                        self.ids.checkbox.group = 'cb_group'
+                LabeledCheckBoxVazaoGraph:
+                    id: mp100
+                    on_kv_post:
+                        self.ids.label.text = '100'
+                        self.ids.checkbox.group = 'cb_group'
+            Button:
+                text:"Fechar"
+                size_hint:(0.2,1)
+                on_release:
+                    root.dismiss()
+
+<LabeledCheckBoxVazaoGraph>:
+    orientation: 'horizontal'
+    size_hint: (0.1,1)
+    CheckBox:
+        id: checkbox
+        on_active: app.root._vazaoGraph.ids.vazao_graph.setMaxPoints(int(label.text),0) if app.root is not None else None
+    Label:
+        id: label
+
+<HistGraphPopup>:
+    title: 'Gráfico de Dados Históricos'
+    BoxLayout:
+        orientation: 'vertical'
+        TimeSeriesGraph:
+            id: graph
+            xlabel: 'Horário'
+            ylabel: 'Leituras'
+            background_color: 0.5,0.5,0.5,0.5
+            x_ticks_minor: 1
+            x_ticks_major: 5
+            y_ticks_major: 100
+            x_grid_label: True
+            y_grid_label: True
+            padding: 5
+            x_grid: True
+            y_grid: True
+            xmin: 0
+            ymin: 0
+            ymax: 2000
+        BoxLayout:
+            orientation:'horizontal'
+            id: sensores
+            size_hint: (1, 0.1)
+        BoxLayout:
+            orientation:'horizontal'
+            size_hint: (1,0.1)
+            Label:
+                text:'Timestamp inicial\r\n[size=12](DD/MM/AAAA HH:MM:SS[/size]'
+                halign: 'center'
+                markup: True
+            TextInput:
+                id: txt_init_time
+                size_hint: (1,0.8)
+                halign: 'center'
+                valign: 'middle'
+                multiline: False
+            Label:
+                text:'Timestamp final\r\n[size=12](DD/MM/AAAA HH:MM:SS)[/size]'
+                halign: 'center'
+                markup: True
+            TextInput:
+                id: txt_final_time
+                size_hint:(1,0.8)
+                halign: 'center'
+                valign: 'middle'
+                multiline: False
+            Button:
+                text:"Fechar"
+                size_hint:(1,0.8)
+                on_release: root.dismiss()
+
+<LabeledCheckBoxHistGraph>:
+    orientation: 'vertical'
+    size_hint: (0.05,1)
+    CheckBox:
+        id: checkbox
+        on_active: app.root.getDataDB()
+    Label:
+        id: label
+        font_size: 11
+        bold: True
+                
+            
+<MotorIconPopup>:
+    title: 'Informações do Motor'
+    size_hint_y:None
+    size_hint_x: 0.5
+    height: 150
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            id: estado_mot
+        Label:
+            id: freq_mot
+        Label:
+            id: t_part
+        Label:
+            id: rotacao
+        Label:
+            id: temp_estator
+
+<InversorIconPopup>:
+    title: 'Informações do Inversor'
+    size_hint_y:None
+    size_hint_x: 0.5
+    height: 150
+    BoxLayout:
+        orientation:'vertical'
+        Label:
+            id: freq_des
+        Label:
+            id: tensao
+        Label:
+            id: corrente
+        Label:
+            id: pot_entrada

@@ -1,0 +1,207 @@
+#:kivy 1.11.1
+
+<MainWidget>:
+    orientation: 'vertical'
+    canvas:
+        Color:
+            rgb: 0.5,0.5,0.5
+        Rectangle:
+            size: self.size
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint:(1,0.1)
+        spacing: 10
+        Label:
+            text:'SUPERVISÓRIO\nRESERVATÓRIO\nV1.0'
+            bold: True
+            size_hint_x: None
+            width: 200
+        BoxLayout:
+            orientation:'horizontal'
+            padding: '5dp'
+            size_hint_x: None
+            width: 600
+            GridLayout:
+                cols:3
+                rows:2
+                Button:
+                    text:'MODBUS'
+                    bold: True
+                    on_release: root._modbusPopup.open()
+                Button:
+                    text:'Scan Time'
+                    bold: True
+                    on_release: root._scanPopup.open()
+                Button:
+                    text:'Config. Motor'
+                    bold: True
+                    on_release: root._motorPopup.open()
+                Button:
+                    text: 'Solenoides'
+                    bold: True
+                    on_release: root._solenoidesPopup.open()
+                Button:
+                    text: 'Controle Automático'
+                    bold: True
+                    on_release: root._controlePopup.open()
+                Button:
+                    text: 'Dados Históricos'
+                    bold: True
+                    on_release: root._hgraph.open()
+            Button:
+                text: 'Gráficos'
+                width: 65
+                size_hint_x: None
+                bold: True
+                on_release: root._graficosPopup.open()
+            Image:
+                id: img_con
+                size_hint_x: None
+                width: 70
+                source: 'imgs/Desconectado.png'
+                pos_hint: {'top':1, 'right':1}
+    FloatLayout:
+        canvas: 
+            Color:
+                rgb: 1,1,1
+            Rectangle:
+                size: self.size
+        Image:
+            source: "imgs/Planta_v4.png"
+        Label:
+            id: lb_water
+            size_hint:(None,None)
+            size: (water.size[0]*0.225,water.size[1]*0.36)
+            pos_hint:{'x': -0.042, 'y':0.083}
+            canvas:
+                Color:
+                    rgb: 0,0,1
+                Rectangle:
+                    size: self.size
+                    pos:(self.pos[0]*-2.87+self.width,self.pos[1]*4.87)
+        Label:
+            id: lb_vazao
+            size_hint: (None, None)
+            size: (25,90)
+            canvas:
+                Color:
+                    rgb: 0,0,1
+                Rectangle:
+                    size: self.size
+                    pos: (708,445)
+        Image:
+            source: 'imgs/grafico_vazao.png'
+            pos_hint: {'x': 0.436, 'y': 0.398}
+        Image:
+            id: water
+            source: 'imgs/WaterTank_v1.png'
+            pos_hint: lb_water.pos_hint
+        AsyncImage:
+            id: img_sol1
+            source: 'imgs/solenoide.png'
+            pos_hint: {'x': -0.39,'y': -0.04}
+        AsyncImage:
+            id: img_sol2
+            source: 'imgs/solenoide.png' 
+            pos_hint: {'x': -0.39,'y': -0.21}
+        AsyncImage:
+            id: img_sol3
+            source: 'imgs/solenoide.png' 
+            pos_hint: {'x': -0.39,'y': -0.38}
+        AsyncImage:
+            id: img_engine
+            source: 'imgs/engine.png' 
+            pos_hint: {'x': 0.249,'y': 0.237}
+        Button:
+            pos_hint: {'x': 0.69,'y': 0.655}
+            size_hint: (0.128,0.16)
+            background_color: (0,0,0,0)
+            on_release:
+                root._motorIconPopup.open()
+        Button:
+            pos_hint: {'x': 0.75,'y': 0.35}  
+            size_hint: (0.1,0.19)
+            background_color: (0,0,0,0)
+            on_release:
+                root._inversorIconPopup.open()
+        TempLabel:
+            id: estado_mot
+            pos_hint: {'x': 0.25,'y': -0.32}
+            hidden: True
+            size_hint: -99,-99
+        TempLabel:
+            id: freq_des
+            pos_hint: {'x': 0.23,'y': -0.27}
+            size_hint: -99,-99
+        TempLabel:
+            id: t_part
+            pos_hint: {'x': 0.35,'y': -0.01}
+            size_hint: -99,-99
+        TempLabel:
+            id: freq_mot
+            pos_hint: {'x': 0.25,'y': 0.35}
+            size_hint: -99,-99
+        TempLabel:
+            id: tensao
+            pos_hint: {'x': 0.35,'y': 0.02}
+            size_hint: -99,-99
+        TempLabel:
+            id: rotacao
+            pos_hint: {'x': 0.25,'y': 0.41}
+            size_hint: -99,-99
+        TempLabel:
+            id: pot_entrada
+            pos_hint: {'x': 0.35,'y': 0.05}
+            size_hint: -99,-99
+        TempLabel:
+            id: corrente
+            pos_hint: {'x': 0.35,'y': 0.08}
+            size_hint: -99,-99
+        TempLabel:
+            id: temp_estator
+            pos_hint: {'x': 0.25,'y': 0.38}
+            size_hint: -99,-99
+        TempLabel:
+            id: vz_entrada
+            pos_hint: {'x': 0.25,'y': 0.35}
+        TempLabel:
+            id: nivel
+            pos_hint: {'x': -0.27,'y': 0.35}
+        TempLabel:
+            id: nivel_h
+            pos_hint: {'x': -0.338,'y': 0.32}
+            size_hint: -99,-99
+        TempLabel:
+            id: alerta_maximo
+            pos_hint: {'x': -0.33,'y': 0.31}
+            color: 1,0,0
+        TempLabel:
+            id: nivel_l
+            pos_hint: {'x': -0.338,'y': 0.28}
+            size_hint: -99,-99
+        TempLabel:
+            id: solenoide_1
+            pos_hint: {'x': -0.4,'y': 0.05}
+            size_hint: -99,-99
+        TempLabel:
+            id: solenoide_2
+            pos_hint: {'x': -0.4,'y': -0.125}
+            size_hint: -99,-99
+        TempLabel:
+            id: solenoide_3
+            pos_hint: {'x': -0.4,'y': -0.295}
+            size_hint: -99,-99
+        AsyncImage:
+            id: alerta_high
+            source: 'imgs/sem_alerta.png'
+            pos_hint: {'x': -0.338,'y': 0.24}
+
+            
+   
+<TempLabel@Label>
+    font_size: 18
+    bold: True
+    halign: 'center'
+    color: 0,0,0,1
+            
+
